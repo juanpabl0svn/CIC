@@ -1,10 +1,7 @@
-// src/app/services/product.service.ts
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IProduct } from '../../types';
-
-
 
 
 @Injectable({
