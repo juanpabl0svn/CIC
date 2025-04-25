@@ -1,5 +1,7 @@
 <div class="p-4 max-w-5xl mx-auto">
-  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+  <div
+    class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6"
+  >
     <input
       type="text"
       placeholder="Search product..."
@@ -16,48 +18,75 @@
   </div>
 
   @if (filtered().length === 0) {
-    <p class="text-center text-gray-400 italic mt-8">No products found.</p>
+  <p class="text-center text-gray-400 italic mt-8">No products found.</p>
   } @else {
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      @for (product of filtered(); track product.id) {
-        <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 flex flex-col transition hover:shadow-md">
-          <img
-            [src]="product.image"
-            alt="{{ product.title }}"
-            class="w-full h-40 object-contain mb-4 rounded"
-          />
-          <h2 class="text-base font-semibold text-gray-900 line-clamp-2 mb-1">{{ product.title }}</h2>
-          <p class="text-sm text-gray-600 mb-2 line-clamp-3">{{ product.description }}</p>
+  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    @for (product of filtered(); track product.id) {
+    <div
+      class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 flex flex-col transition hover:shadow-md"
+    >
+      <img
+        [src]="product.image"
+        alt="{{ product.title }}"
+        class="w-full h-40 object-contain mb-4 rounded"
+      />
+      <h2 class="text-base font-semibold text-gray-900 line-clamp-2 mb-1">
+        {{ product.title }}
+      </h2>
+      <p class="text-sm text-gray-600 mb-2 line-clamp-3">
+        {{ product.description }}
+      </p>
 
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-sm text-gray-800 font-medium">
-              {{ product.price | currency:'USD':'symbol' }}
-            </span>
-            <span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full capitalize">
-              {{ product.category }}
-            </span>
-          </div>
+      <div class="flex items-start justify-between my-2">
+        <span class="text-sm text-gray-800 font-medium">
+          {{ product.price | currency : "USD" : "symbol" }}
+        </span>
+        <div class="flex flex-col gap-3 mt-2">
+          <span
+            class="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full capitalize"
+          >
+            {{ product.category }}
+          </span>
 
-          <div class="mt-auto flex justify-end gap-2">
-            <button
-              class="px-3 py-1 text-sm text-blue-600 border border-blue-600 rounded hover:bg-blue-50 transition"
-              (click)="openForm(product)"
+          <div class="flex items-center gap-1">
+            @for(i of stars(); track i){
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-3 w-3"
+              [attr.fill]="product.rate > i ? 'currentColor' : 'none'"
+              [attr.stroke]="product.rate > i ? 'none' : 'currentColor'"
+              [attr.stroke-width]="product.rate > i ? '0' : '1'"
+              viewBox="0 0 20 20"
+              fill="currentColor"
             >
-              Edit
-            </button>
-            <button
-              class="px-3 py-1 text-sm text-red-600 border border-red-600 rounded hover:bg-red-50 transition"
-              (click)="delete(product.id)"
-            >
-              Delete
-            </button>
+              <path
+                d="M9.049 2.927c.3-.921 1.602-.921 1.902 0l1.4 4.255 4.452.388c.944.083 1.314 1.217.629 1.794l-3.41 2.473 1.238 4.643c.256.97-.819 1.773-1.707 1.31l-3.75-2.481-3.75 2.481c-.888.463-1.963-.34-1.707-1.31l1.238-4.643-3.41-2.473c-.685-.577-.315-1.711.629-1.794l4.452-.388 1.4-4.255z"
+              />
+            </svg>
+
+            }
           </div>
         </div>
-      }
-    </div>
-  }
+      </div>
 
-  @if (showForm()) {
-    <app-product-form [product]="selected()" (closed)="closeForm($event)" />
+      <div class="mt-4 flex justify-end gap-2">
+        <button
+          class="px-3 py-1 text-sm text-blue-600 border border-blue-600 rounded hover:bg-blue-50 transition"
+          (click)="openForm(product)"
+        >
+          Edit
+        </button>
+        <button
+          class="px-3 py-1 text-sm text-red-600 border border-red-600 rounded hover:bg-red-50 transition"
+          (click)="delete(product.id)"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+    }
+  </div>
+  } @if (showForm()) {
+  <app-product-form [product]="selected()" (closed)="closeForm($event)" />
   }
 </div>

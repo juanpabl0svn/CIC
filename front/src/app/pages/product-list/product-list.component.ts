@@ -25,6 +25,8 @@ export class ProductListComponent {
   showForm = signal(false);
   selected = signal<IProduct | null>(null);
 
+  stars = signal(Array.from({ length: 5 }, (_, i) => i + 1));
+
   filtered = computed(() => {
     const term = this.search().toLowerCase();
     return this.products().filter(p =>
