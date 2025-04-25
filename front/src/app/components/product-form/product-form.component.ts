@@ -5,6 +5,7 @@ import { HotToastService } from '@ngxpert/hot-toast';
 
 import { ProductService } from '../../services/product.service';
 import { IProduct } from '../../../types';
+import { CATEGORIES } from '../../../utils';
 
 @Component({
   selector: 'app-product-form',
@@ -12,28 +13,26 @@ import { IProduct } from '../../../types';
   templateUrl: './product-form.component.html',
 })
 export class ProductFormComponent {
+
   @Input() product: IProduct | null = null;
   @Output() closed = new EventEmitter<boolean>();
 
-  toast = inject(HotToastService);
-  productService = inject(ProductService);
+
+  constructor(private toast: HotToastService, private productService: ProductService) { }
+
 
   formData: Omit<IProduct, 'id'> = {
     title: '',
     price: 0,
     description: '',
-    category: 'electronics',
+    category: '',
     image: '',
     rate: 0,
     count: 0
   };
 
-  categories = [
-    'electronics',
-    'jewelry',
-    "man's clothing",
-    "woman's clothing"
-  ];
+  categories = CATEGORIES;
+
 
   ngOnInit() {
     if (this.product) {
@@ -46,7 +45,7 @@ export class ProductFormComponent {
     if (this.product) {
       this.productService.update(this.product.id, this.formData).subscribe({
         next: () => {
-          this.toast.success('IProduct updated');
+          this.toast.success('Product updated');
           this.closed.emit(true);
         },
         error: () => this.toast.error('Update failed')
@@ -54,7 +53,7 @@ export class ProductFormComponent {
     } else {
       this.productService.create(this.formData).subscribe({
         next: () => {
-          this.toast.success('IProduct created');
+          this.toast.success('Product created');
           this.closed.emit(true);
         },
         error: () => this.toast.error('Creation failed')
